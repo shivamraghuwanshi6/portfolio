@@ -10,6 +10,7 @@ export default function Hero() {
       <div className="absolute inset-0 z-0">
         <HeroScene />
       </div>
+       <div className="pointer-events-none absolute inset-0 z-[1] bg-[radial-gradient(ellipse_at_70%_50%,rgba(124,58,237,0.18),transparent_60%)]" />
 
       <div className="pointer-events-none relative z-10 max-w-2xl">
         <motion.p
