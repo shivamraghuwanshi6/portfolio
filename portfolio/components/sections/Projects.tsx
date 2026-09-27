@@ -1,95 +1,113 @@
-export type Project = {
-  name: string;
-  category: string;
-  description: string;
-  tech: string[];
-  features: string[];
-  github?: string;
-  live?: string;
-  accent: string; // gradient theme
-};
+"use client";
+import Link from "next/link";
+import { motion } from "framer-motion";
+import TiltCard from "@/components/ui/TiltCard";
+import { featuredProjects, otherProjects } from "@/data/projects";
 
-export const featuredProjects: Project[] = [
-  {
-    name: "FlickSuggester",
-    category: "Full Stack / Movie Recommendation Platform",
-    description:
-      "A full-stack movie and series discovery platform to explore content, manage watchlists, view trailers, write reviews, and get recommendations.",
-    tech: ["React", "Node.js", "Express.js", "MySQL", "JWT", "JavaScript"],
-    features: [
-      "Movie discovery, search and filtering",
-      "Series exploration and movie details",
-      "Watchlist and user authentication",
-      "Reviews, recommendations, trailers",
-      "User profile and admin functionality",
-    ],
-    github: "https://github.com/shivamraghuwanshi6/flicksuggester",
-    accent: "from-rose-600/30 via-amber-500/10 to-transparent",
-  },
-  {
-    name: "AI Resume Job Matcher",
-    category: "Artificial Intelligence / NLP / Full Stack",
-    description:
-      "An AI-powered system that analyzes a resume against a job description and calculates how well the candidate matches the requirements.",
-    tech: [
-      "Python", "Pandas", "NumPy", "Scikit-learn", "NLP",
-      "Sentence Transformers", "FastAPI", "React", "PostgreSQL", "Docker", "MLflow",
-    ],
-    features: [
-      "Resume PDF parsing and job description analysis",
-      "Skill extraction and semantic matching",
-      "Resume-job similarity and match score",
-      "Missing skill detection and recommendations",
-      "API-based backend",
-    ],
-    github: "https://github.com/shivamraghuwanshi6/AI-Resume-Job-Matcher",
-    accent: "from-violet-600/30 via-cyan-500/10 to-transparent",
-  },
-  {
-    name: "MLOps Taxi Prediction",
-    category: "Machine Learning / MLOps",
-    description:
-      "A machine learning project that predicts taxi trip duration and demonstrates an end-to-end MLOps workflow.",
-    tech: [
-      "Python", "Pandas", "NumPy", "Scikit-learn", "FastAPI",
-      "Docker", "MLflow", "Prefect", "Prometheus",
-    ],
-    features: [
-      "Data preprocessing and model training",
-      "Prediction API",
-      "Model tracking with MLflow",
-      "Dockerized deployment",
-      "Monitoring and MLOps pipeline",
-    ],
-    accent: "from-cyan-500/30 via-blue-600/10 to-transparent",
-  },
-  {
-    name: "Real Estate ML Engine",
-    category: "Machine Learning / Web Application",
-    description:
-      "A machine learning-based real estate platform that estimates prices from property features and provides classification insights through an interactive web interface.",
-    tech: ["Python", "Pandas", "NumPy", "Scikit-learn", "FastAPI", "JavaScript", "Docker"],
-    features: [
-      "House price prediction and classification",
-      "ML metrics",
-      "Interactive UI",
-      "Property and floor-plan visualization",
-      "Deployment-ready architecture",
-    ],
-    accent: "from-emerald-500/30 via-teal-500/10 to-transparent",
-  },
-];
+export default function Projects() {
+  return (
+    <section id="projects" className="bg-black px-6 py-28 md:px-12">
+      <div className="mx-auto max-w-6xl">
+        <motion.p
+          initial={{ opacity: 0, y: 20 }}
+          whileInView={{ opacity: 1, y: 0 }}
+          viewport={{ once: true }}
+          className="text-sm text-violet-400"
+        >
+          Projects
+        </motion.p>
+        <motion.h2
+          initial={{ opacity: 0, y: 30 }}
+          whileInView={{ opacity: 1, y: 0 }}
+          viewport={{ once: true }}
+          transition={{ delay: 0.1 }}
+          className="mt-3 text-3xl font-bold text-white md:text-5xl"
+        >
+          Selected work
+        </motion.h2>
 
-export const otherProjects = [
-  {
-    name: "Medical Store Management System",
-    description:
-      "A Java-based system for managing medicines, inventory, and store operations.",
-    tech: ["Java", "MySQL"],
-  },
-  { name: "Swing Student Management System", description: "", tech: [] as string[] },
-  { name: "Tkinter Task Manager", description: "", tech: [] as string[] },
-  { name: "NutriAI Smart Diet Planner", description: "", tech: [] as string[] },
-  { name: "SRM Student Chatbot", description: "", tech: [] as string[] },
-  { name: "TrimTime", description: "", tech: [] as string[] },
-];
+        <div className="mt-12 grid gap-6 md:grid-cols-2">
+          {featuredProjects.map((p, i) => (
+            <motion.div
+              key={p.name}
+              initial={{ opacity: 0, y: 40 }}
+              whileInView={{ opacity: 1, y: 0 }}
+              viewport={{ once: true }}
+              transition={{ delay: (i % 2) * 0.1 }}
+            >
+              <TiltCard className="group h-full overflow-hidden rounded-2xl border border-white/10 bg-white/5 backdrop-blur-md">
+                <div className={`h-28 bg-gradient-to-br ${p.accent}`} />
+                <div className="p-6">
+                  <p className="text-xs text-zinc-500">{p.category}</p>
+                  <h3 className="mt-1 text-xl font-semibold text-white">{p.name}</h3>
+                  <p className="mt-3 text-sm leading-relaxed text-zinc-400">
+                    {p.description}
+                  </p>
+
+                  <ul className="mt-4 space-y-1 text-sm text-zinc-300">
+                    {p.features.map((f) => (
+                      <li key={f} className="flex gap-2">
+                        <span className="text-violet-400">▹</span>
+                        {f}
+                      </li>
+                    ))}
+                  </ul>
+
+                  <div className="mt-5 flex flex-wrap gap-2">
+                    {p.tech.map((t) => (
+                      <span
+                        key={t}
+                        className="rounded-full border border-white/10 bg-white/5 px-2.5 py-1 text-xs text-zinc-300 transition group-hover:border-violet-500/40"
+                      >
+                        {t}
+                      </span>
+                    ))}
+                  </div>
+
+                  {(p.github || p.live) && (
+                    <div className="mt-6 flex gap-3">
+                      {p.github && (
+                        <Link href={p.github} target="_blank" rel="noopener noreferrer" className="rounded-full bg-white px-4 py-2 text-sm font-medium text-black transition hover:bg-zinc-200">
+                          GitHub
+                        </Link>
+                      )}
+                      {p.live && (
+                        <Link href={p.live} target="_blank" rel="noopener noreferrer" className="rounded-full border border-white/15 px-4 py-2 text-sm font-medium text-white transition hover:bg-white/10">
+                          Live Demo
+                        </Link>
+                      )}
+                    </div>
+                  )}
+                </div>
+              </TiltCard>
+            </motion.div>
+          ))}
+        </div>
+
+        <h3 className="mt-20 text-xl font-semibold text-white">More projects</h3>
+        <div className="mt-6 grid gap-4 sm:grid-cols-2 lg:grid-cols-3">
+          {otherProjects.map((p) => (
+            <div
+              key={p.name}
+              className="rounded-xl border border-white/10 bg-white/[0.03] p-5 transition hover:border-violet-500/40 hover:bg-white/5"
+            >
+              <p className="font-medium text-white">{p.name}</p>
+              {p.description && (
+                <p className="mt-2 text-sm text-zinc-400">{p.description}</p>
+              )}
+              {p.tech.length > 0 && (
+                <div className="mt-3 flex flex-wrap gap-2">
+                  {p.tech.map((t) => (
+                    <span key={t} className="text-xs text-violet-300">
+                      {t}
+                    </span>
+                  ))}
+                </div>
+              )}
+            </div>
+          ))}
+        </div>
+      </div>
+    </section>
+  );
+}
