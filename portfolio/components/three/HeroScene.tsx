@@ -1,5 +1,5 @@
 "use client";
-import { useRef } from "react";
+import { useEffect, useRef, useState } from "react";
 import { Canvas, useFrame } from "@react-three/fiber";
 import {
   Float,
@@ -9,7 +9,6 @@ import {
 } from "@react-three/drei";
 import type { Group, Points as ThreePoints } from "three";
 
-// Fixed seed so particles are identical on every render
 function seeded(seed: number) {
   let s = seed;
   return () => {
@@ -32,10 +31,20 @@ function makePositions(count: number) {
   return arr;
 }
 
-const POSITIONS = makePositions(1800);
+function useIsMobile() {
+  const [isMobile, setIsMobile] = useState(false);
+  useEffect(() => {
+    const check = () => setIsMobile(window.innerWidth < 768);
+    check();
+    window.addEventListener("resize", check);
+    return () => window.removeEventListener("resize", check);
+  }, []);
+  return isMobile;
+}
 
-function Particles() {
+function Particles({ count }: { count: number }) {
   const ref = useRef<ThreePoints>(null);
+  const positions = useRef(makePositions(count)).current;
 
   useFrame((_, delta) => {
     if (!ref.current) return;
@@ -44,7 +53,7 @@ function Particles() {
   });
 
   return (
-    <Points ref={ref} positions={POSITIONS} stride={3} frustumCulled={false}>
+    <Points ref={ref} positions={positions} stride={3} frustumCulled={false}>
       <PointMaterial
         transparent
         color="#a78bfa"
@@ -56,7 +65,7 @@ function Particles() {
   );
 }
 
-function Core() {
+function Core({ segments }: { segments: number }) {
   const group = useRef<Group>(null);
 
   useFrame((state) => {
@@ -70,7 +79,7 @@ function Core() {
     <group ref={group} position={[1.8, 0, 0]}>
       <Float speed={1.5} rotationIntensity={0.4} floatIntensity={1}>
         <mesh>
-          <sphereGeometry args={[1.2, 64, 64]} />
+          <sphereGeometry args={[1.2, segments, segments]} />
           <MeshDistortMaterial
             color="#6d28d9"
             emissive="#4c1d95"
@@ -91,13 +100,18 @@ function Core() {
 }
 
 export default function HeroScene() {
+  const isMobile = useIsMobile();
+
   return (
-    <Canvas camera={{ position: [0, 0, 6], fov: 50 }} dpr={[1, 2]}>
+    <Canvas
+      camera={{ position: [0, 0, 6], fov: 50 }}
+      dpr={isMobile ? 1 : [1, 2]}
+    >
       <ambientLight intensity={0.4} />
       <directionalLight position={[3, 3, 3]} intensity={2} />
       <pointLight position={[-4, -2, 2]} intensity={40} color="#3b82f6" />
-      <Core />
-      <Particles />
+      <Core segments={isMobile ? 24 : 64} />
+      <Particles count={isMobile ? 500 : 1800} />
     </Canvas>
   );
 }

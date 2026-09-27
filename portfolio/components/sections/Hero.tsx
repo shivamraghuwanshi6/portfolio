@@ -11,12 +11,12 @@ export default function Hero() {
       id="home"
       className="relative flex h-screen items-center overflow-hidden bg-black px-6 md:px-12"
     >
-      <div className="absolute inset-0 z-0">
+            <div className="absolute inset-0 z-0 opacity-40 md:opacity-100">
         <HeroScene />
       </div>
       <div className="pointer-events-none absolute inset-0 z-[1] bg-[radial-gradient(ellipse_at_70%_50%,rgba(124,58,237,0.18),transparent_60%)]" />
 
-      <div className="pointer-events-none relative z-10 max-w-2xl">
+            <div className="pointer-events-none relative z-10 max-w-2xl pt-16 md:pt-0">
         <motion.p
           initial={{ opacity: 0, y: 20 }}
           animate={{ opacity: 1, y: 0 }}
