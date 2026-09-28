@@ -5,18 +5,21 @@ import { motion } from "framer-motion";
 
 const HeroScene = dynamic(() => import("../three/HeroScene"), { ssr: false });
 
+const RESUME_URL =
+  "https://drive.google.com/file/d/1llA66wIJFcLWnnK2fsWdLzN-oAyuLwk9/view?usp=sharing";
+
 export default function Hero() {
   return (
     <section
       id="home"
       className="relative flex h-screen items-center overflow-hidden bg-black px-6 md:px-12"
     >
-            <div className="absolute inset-0 z-0 opacity-40 md:opacity-100">
+      <div className="absolute inset-0 z-0 opacity-40 md:opacity-100">
         <HeroScene />
       </div>
       <div className="pointer-events-none absolute inset-0 z-[1] bg-[radial-gradient(ellipse_at_70%_50%,rgba(124,58,237,0.18),transparent_60%)]" />
 
-            <div className="pointer-events-none relative z-10 max-w-2xl pt-16 md:pt-0">
+      <div className="pointer-events-none relative z-10 max-w-2xl pt-16 md:pt-0">
         <motion.p
           initial={{ opacity: 0, y: 20 }}
           animate={{ opacity: 1, y: 0 }}
@@ -65,6 +68,9 @@ export default function Hero() {
           </Link>
           <Link href="#contact" className="rounded-full border border-white/15 px-6 py-3 text-sm font-medium text-white transition hover:bg-white/10">
             Let&apos;s Connect
+          </Link>
+          <Link href={RESUME_URL} target="_blank" rel="noopener noreferrer" className="rounded-full border border-white/15 px-6 py-3 text-sm font-medium text-white transition hover:bg-white/10">
+            Resume
           </Link>
         </motion.div>
       </div>
